@@ -81,6 +81,32 @@
             transform: translateY(0);
         }
 
+        .cta-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .upcoming-text {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+        }
+
+        @media (max-width: 600px) {
+            .cta-wrapper {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .upcoming-text {
+                margin-bottom: 0.5rem;
+            }
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -120,7 +146,10 @@
     <div class="container">
         <p class="construction-text">Website Under Construction</p>
         <h1>ENSEMBLE 404</h1>
-        <a href="/listeningnotfound" class="cta-button">Listening Not Found</a>
+        <div class="cta-wrapper">
+            <span class="upcoming-text">Upcoming Event &nbsp;&rarr;</span>
+            <a href="/listeningnotfound" class="cta-button">Listening Not Found</a>
+        </div>
     </div>
 </body>
 </html>
