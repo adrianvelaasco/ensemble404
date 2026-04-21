@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Scaler | Technical Floor Plan</title>
+    <meta name="description"
+        content="Interactive technical visualization of spatial dimensions with precise 17.85m x 18.06m measurements.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbhWOj-6nbiEDsXmgcDhXEjI0u1iqZWgE",
+            authDomain: "listening-not-found.firebaseapp.com",
+            databaseURL: "https://listening-not-found-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "listening-not-found",
+            storageBucket: "listening-not-found.firebasestorage.app",
+            messagingSenderId: "659911475972",
+            appId: "1:659911475972:web:561ad1ee64e3b5ccd94651",
+            measurementId: "G-7QKNE3ZM62"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.firebaseDB = getDatabase(app);
+        window.firebaseRef = ref;
+        window.firebaseOnValue = onValue;
+        window.firebaseSet = set;
+    </script>
+</head>
+
+<body>
+    <header class="glitch-header">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <div class="glitch-text" data-text="Listening Not Found">Listening Not Found</div>
+                <div class="marquee-spacer"></div>
+            </div>
+            <div class="marquee-item">
+                <div class="glitch-text" data-text="Listening Not Found">Listening Not Found</div>
+                <div class="marquee-spacer"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="top-nav">
+        <button id="btn-listening" class="custom-nav-btn">Listening Not Found</button>
+        <button id="btn-ensemble" class="custom-nav-btn">Ensemble 404</button>
+    </nav>
+
+    <main class="container">
+        <div class="canvas-container">
+            <div class="dimension-wrapper">
+                <!-- Main Rectangle -->
+                <!-- Main Rectangle -->
+                <div class="rectangle-box">
+                    <!-- Sala Sections Visualization -->
+                    <div id="sala-sections">
+                        <div id="section-list">
+                            <!-- Dynamically populated -->
+                        </div>
+                        <button id="resync-btn" class="resync-btn">SYNC TO LIVE</button>
+                    </div>
+
+                    <!-- Spots -->
+                    <div class="spot spot-1" title="Theremin"></div>
+                    <div class="spot spot-2 has-image" title="Violin"
+                        style="background-image: url('profiles/violin.jpg')"></div>
+                    <div class="spot spot-3" title="Drum Kit"></div>
+                    <div class="spot spot-4 has-image" title="Piano"
+                        style="background-image: url('profiles/piano.jpg')"></div>
+                    <div class="spot spot-5" title="Contrabassoon"></div>
+                    <div class="spot spot-6 has-image" title="Flute"
+                        style="background-image: url('profiles/flute.jpg')"></div>
+                    <div class="spot spot-7 has-image" title="Percussion"
+                        style="background-image: url('profiles/percussion.jpg')"></div>
+
+                    <div class="foh-box">FOH</div>
+
+                    <div class="spot spot-8 has-image" title="Bassoon"
+                        style="background-image: url('profiles/bassoon.jpg')"></div>
+
+                    <!-- Exits -->
+                    <div class="exit-icon top-left">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </div>
+                    <div class="exit-icon bottom-left">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Instrument Modal (CV Style) -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal" id="close-modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-content-wrapper">
+                <div id="modal-dynamic-content">
+                    <div class="modal-image" id="modal-image"></div>
+
+                    <div class="modal-content">
+                        <h2 id="modal-title">Name</h2>
+                        <div class="cv-divider"></div>
+                        <div class="cv-section-title">PROFILE SUMMARY</div>
+                        <p id="modal-description">Loading details...</p>
+                    </div>
+                </div>
+
+                <div class="carousel-controls" id="carousel-controls" style="display: none;">
+                    <button class="arrow-btn" id="carousel-prev">&#10094;</button>
+                    <div class="carousel-dots" id="carousel-dots"></div>
+                    <button class="arrow-btn" id="carousel-next">&#10095;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

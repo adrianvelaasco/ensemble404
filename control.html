@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTROL | Listening Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #050505; 
+            --card: #111; 
+            --accent: #0000FF; 
+            --text: #ffffff; 
+            --border: #222;
+        }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { 
+            width: 100%; 
+            max-width: 800px; 
+            background: var(--card); 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        h1 { 
+            font-size: 1rem; 
+            letter-spacing: 0.3em; 
+            text-transform: uppercase; 
+            margin: 0 0 40px 0; 
+            color: var(--accent);
+            text-align: center;
+        }
+        .group { margin-bottom: 25px; }
+        label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-size: 0.7rem; 
+            font-weight: 700;
+            opacity: 0.5; 
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        select, textarea { 
+            width: 100%; 
+            background: #000; 
+            border: 1px solid var(--border); 
+            color: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 1rem;
+            outline: none; 
+            transition: border-color 0.3s;
+        }
+        select:focus, textarea:focus { border-color: var(--accent); }
+        textarea { 
+            height: 350px; 
+            resize: vertical; 
+            line-height: 1.6; 
+        }
+        button { 
+            width: 100%; 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2em; 
+            transition: all 0.3s; 
+            font-size: 0.9rem;
+        }
+        button:hover { 
+            background: #1a1aff; 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 20px rgba(0,0,255,0.3);
+        }
+        button:active { transform: translateY(0); }
+        
+        .status-bar { 
+            margin-top: 20px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem; 
+            opacity: 0.4; 
+        }
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #333; }
+        .dot.online { background: #00FF00; box-shadow: 0 0 10px #00FF00; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LIVE CONTROL PANEL</h1>
+        
+
+        <div class="group">
+            <label>SEQUENCE CONTROL (SALA)</label>
+            <div id="sequence-status" style="margin-bottom: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center;">
+                <div style="font-size: 0.7rem; opacity: 0.5; margin-bottom: 5px;">CURRENT SECTION</div>
+                <div id="current-section-display" style="font-size: 1.5rem; font-weight: 700; color: #fff;">ENTRY LOOP</div>
+                <div id="countdown-display" style="font-size: 0.9rem; margin-top: 10px; color: var(--accent);">--:--</div>
+            </div>
+            <button id="start-sequence-btn">START SECTION 2 (ACTIVATION)</button>
+            <button id="reset-sequence-btn" style="background: #331111; margin-top: 10px; font-size: 0.7rem; padding: 10px;">RESET EVERYTHING (REVERT TO ENTRY LOOP)</button>
+        </div>
+        
+        <div class="status-bar">
+            <div class="indicator">
+                <div class="dot" id="status-dot"></div>
+                <span id="status-text">Disconnected</span>
+            </div>
+            <div>FIREBASE CLOUD SYNC</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbhWOj-6nbiEDsXmgcDhXEjI0u1iqZWgE",
+            authDomain: "listening-not-found.firebaseapp.com",
+            databaseURL: "https://listening-not-found-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "listening-not-found",
+            storageBucket: "listening-not-found.firebasestorage.app",
+            messagingSenderId: "659911475972",
+            appId: "1:659911475972:web:561ad1ee64e3b5ccd94651",
+            measurementId: "G-7QKNE3ZM62"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const startBtn = document.getElementById('start-sequence-btn');
+        const resetBtn = document.getElementById('reset-sequence-btn');
+        const currentDisplay = document.getElementById('current-section-display');
+        const countdownDisplay = document.getElementById('countdown-display');
+        const statusText = document.getElementById('status-text');
+        const statusDot = document.getElementById('status-dot');
+
+        const sections = [
+            { name: "Entry Loop", duration: 0 },
+            { name: "Activation", duration: 2 },
+            { name: "Exploratory Field", duration: 4 },
+            { name: "Latent Space Walk", duration: 2 },
+            { name: "Orbit", duration: 1 },
+            { name: "Deepfake", duration: 2 },
+            { name: "Ghost Takeover", duration: 2 },
+            { name: "Digital Error", duration: 1 },
+            { name: "Rarefied", duration: 2 },
+            { name: "Pointillism", duration: 2 },
+            { name: "Digital Rain", duration: 2 },
+            { name: "Etheric + Melody", duration: 2 },
+            { name: "Whisper Network", duration: 2 },
+            { name: "Groups + Spatialisation + Imitation + Memory Leak", duration: 2 },
+            { name: "Ghost Swarm", duration: 2 },
+            { name: "Collective Swell", duration: 1 },
+            { name: "Post-Digital Tempest", duration: 1 },
+            { name: "Buffer Error", duration: 2 },
+            { name: "Resonator", duration: 2 },
+            { name: "Micro + Slow Movement", duration: 3 },
+            { name: "Upload Ascension", duration: 4 }
+        ];
+
+        // Connection Monitor
+        const connectedRef = ref(db, ".info/connected");
+        onValue(connectedRef, (snap) => {
+            if (snap.val() === true) {
+                statusDot.classList.add('online');
+                statusText.innerText = "Connected and Synchronized";
+            } else {
+                statusDot.classList.remove('online');
+                statusText.innerText = "Disconnected";
+            }
+        });
+
+        // Sequence Monitor
+        const seqRef = ref(db, 'sequence');
+        onValue(seqRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.isRunning) {
+                const idx = data.currentIndex || 0;
+                currentDisplay.innerText = sections[idx] ? sections[idx].name : "FINISHED";
+                startBtn.disabled = true;
+                startBtn.innerText = "SEQUENCE IN PROGRESS";
+                
+                // Countdown logic (approximate client-side for UI only)
+                if (data.startTime && sections[idx].duration > 0) {
+                    updateCountdown(data.startTime, sections[idx].duration);
+                } else {
+                    countdownDisplay.innerText = "--:--";
+                }
+            } else {
+                if (countdownInterval) clearInterval(countdownInterval);
+                currentDisplay.innerText = "ENTRY LOOP";
+                countdownDisplay.innerText = "--:--";
+                startBtn.disabled = false;
+                startBtn.innerText = "START SECTION 2 (ACTIVATION)";
+            }
+        });
+
+        let countdownInterval;
+        function updateCountdown(startTime, durationMin) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            const durationMs = durationMin * 60 * 1000;
+            
+            const tick = () => {
+                const elapsed = Date.now() - (startTime - (window.serverTimeOffset || 0));
+                const remaining = Math.max(0, durationMs - elapsed);
+                const mins = Math.floor(remaining / 60000);
+                const secs = Math.floor((remaining % 60000) / 1000);
+                countdownDisplay.innerText = `${mins}:${secs.toString().padStart(2, '0')}`;
+                if (remaining <= 0) clearInterval(countdownInterval);
+            };
+            
+            countdownInterval = setInterval(tick, 1000);
+            tick();
+        }
+
+        // Server time offset
+        const offsetRef = ref(db, ".info/serverTimeOffset");
+        onValue(offsetRef, (snap) => {
+            window.serverTimeOffset = snap.val();
+        });
+
+        // Start Sequence
+        startBtn.addEventListener('click', () => {
+            const startTime = Date.now() + (window.serverTimeOffset || 0);
+            set(ref(db, 'sequence'), {
+                currentIndex: 1, // Section 2
+                startTime: startTime,
+                isRunning: true
+            });
+        });
+
+        // Reset Sequence
+        resetBtn.addEventListener('click', () => {
+            set(ref(db, 'sequence'), {
+                currentIndex: 0,
+                startTime: 0,
+                isRunning: false
+            });
+        });
+    </script>
+</body>
+</html>
