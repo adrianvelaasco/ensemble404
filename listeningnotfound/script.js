@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicians = {
         'bassoon': { name: 'Rodrigo Rodrigues', profession: 'Bassoonist' },
         'contrabassoon': { name: 'Rodrigo Rodrigues', profession: 'Contrabassoonist' },
-        'flute': { name: 'Giusy Panazador', profession: 'Flutist' },
+        'flute': { name: 'Giusy Panzanaro', profession: 'Flutist' },
         'piano': { name: 'Valentina Donato', profession: 'Pianist' },
         'theremin': { name: 'Valentina Donato', profession: 'Thereminist' },
         'percussion': { name: 'Vitalia Agrba', profession: 'Percussionist' },
