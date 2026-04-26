@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ensemble 404 - Under Construction</title>
+    <title>ENSEMBLE 404</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0a0a0a;
+            --bg-color: #000000;
             --text-color: #ffffff;
-            --accent-color: #333333;
-            --hover-color: #f0f0f0;
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         * {
@@ -22,134 +20,44 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: var(--font-main);
+            font-family: 'Inter', sans-serif;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-            animation: fadeIn 1.5s ease-out;
         }
 
         h1 {
-            font-size: clamp(2rem, 8vw, 4rem);
+            font-size: clamp(2rem, 8vw, 4.5rem);
             font-weight: 200;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            margin-bottom: 2rem;
-            opacity: 0.9;
+            opacity: 0;
+            animation: fadeIn 3s ease-out forwards;
+            cursor: pointer;
+            transition: all 1s ease;
         }
 
-        .construction-text {
-            font-size: 0.9rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            margin-bottom: 4rem;
-            opacity: 0.5;
-            animation: pulse 3s infinite ease-in-out;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            font-size: 0.8rem;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-button:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            border-color: var(--text-color);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .cta-button:active {
-            transform: translateY(0);
-        }
-
-        .cta-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .upcoming-text {
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 300;
-        }
-
-        @media (max-width: 600px) {
-            .cta-wrapper {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .upcoming-text {
-                margin-bottom: 0.5rem;
-            }
+        h1:hover {
+            letter-spacing: 0.35em;
+            text-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
+        a {
+            text-decoration: none;
+            color: inherit;
         }
-
-        /* Ambient background decoration */
-        .decor {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
-            mix-blend-mode: screen;
-        }
-
-        .c1 { width: 600px; height: 600px; top: -100px; right: -100px; }
-        .c2 { width: 400px; height: 400px; bottom: -50px; left: -100px; }
     </style>
 </head>
 <body>
-    <div class="decor">
-        <div class="circle c1"></div>
-        <div class="circle c2"></div>
-    </div>
-
-    <div class="container">
-        <p class="construction-text">Website Under Construction</p>
+    <a href="/listeningnotfound">
         <h1>ENSEMBLE 404</h1>
-        <div class="cta-wrapper">
-            <span class="upcoming-text">Upcoming Event &nbsp;&rarr;</span>
-            <a href="/listeningnotfound" class="cta-button">Listening Not Found</a>
-        </div>
-    </div>
+    </a>
 </body>
 </html>

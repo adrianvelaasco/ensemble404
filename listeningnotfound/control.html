@@ -64,7 +64,19 @@
             outline: none; 
             transition: border-color 0.3s;
         }
-        select:focus, textarea:focus { border-color: var(--accent); }
+        select:focus, textarea:focus, input:focus { border-color: var(--accent); }
+        input[type="text"] { 
+            width: 100%; 
+            background: #000; 
+            border: 1px solid var(--border); 
+            color: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 1rem;
+            outline: none; 
+            transition: border-color 0.3s;
+        }
         textarea { 
             height: 350px; 
             resize: vertical; 
@@ -117,17 +129,78 @@
         <h1>LIVE CONTROL PANEL</h1>
         
 
-        <div class="group">
-            <label>SEQUENCE CONTROL (SALA)</label>
-            <div id="sequence-status" style="margin-bottom: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center;">
-                <div style="font-size: 0.7rem; opacity: 0.5; margin-bottom: 5px;">CURRENT SECTION</div>
-                <div id="current-section-display" style="font-size: 1.5rem; font-weight: 700; color: #fff;">ENTRY LOOP</div>
-                <div id="countdown-display" style="font-size: 0.9rem; margin-top: 10px; color: var(--accent);">--:--</div>
+        <!-- Flex Container for Sequence Control and Section Monitor -->
+        <div style="display: flex; gap: 20px; align-items: stretch; margin-bottom: 25px;">
+            <div class="group" style="flex: 1; margin-bottom: 0;">
+                <label>SEQUENCE CONTROL (SALA)</label>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
+                    <div id="current-section-display" style="font-size: 1.8rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em;">ENTRY LOOP</div>
+                    <div id="countdown-display" style="font-family: monospace; font-size: 1.2rem; opacity: 0.5;">--:--</div>
+                </div>
+                <button id="start-sequence-btn">START SECTION 2 (ACTIVATION)</button>
+                <button id="reset-sequence-btn" style="background: #331111; margin-top: 10px; font-size: 0.7rem; padding: 10px;">RESET EVERYTHING (REVERT TO ENTRY LOOP)</button>
             </div>
-            <button id="start-sequence-btn">START SECTION 2 (ACTIVATION)</button>
-            <button id="reset-sequence-btn" style="background: #331111; margin-top: 10px; font-size: 0.7rem; padding: 10px;">RESET EVERYTHING (REVERT TO ENTRY LOOP)</button>
+
+            <div class="group" style="flex: 1; margin-bottom: 0;">
+                <label>SECTION MONITOR</label>
+                <div id="admin-section-list" style="height: 180px; overflow-y: auto; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 8px;">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
         </div>
-        
+
+        <div class="group">
+            <label>COLOR CONTROL (HEX)</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="color-input" placeholder="#FFFFFF" style="flex-grow: 1;">
+                <button id="update-color-btn" style="width: auto; padding: 0 20px; font-size: 0.7rem; background: #444;">SET</button>
+            </div>
+        </div>
+
+        <div class="group">
+            <label>INSTRUMENT POSITIONS</label>
+            <div id="positions-container">
+                <div class="pos-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px;">
+                    <span>Bahar Erünsal - Violin</span>
+                    <span style="font-size: 0.6rem; opacity: 0.3; letter-spacing: 0.1em;">FIXED POSITION</span>
+                </div>
+                <div class="pos-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px;">
+                    <span>Giusy Panzanaro - Flute</span>
+                    <span style="font-size: 0.6rem; opacity: 0.3; letter-spacing: 0.1em;">FIXED POSITION</span>
+                </div>
+                <!-- Bassoon / Contrabassoon -->
+                <div class="pos-row" style="margin-bottom: 10px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 0.8rem; opacity: 0.8;">Rodrigo Rodrigues</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="instr-toggle" data-pos="3" data-val="bassoon" style="padding: 10px; font-size: 0.65rem; background: #222;">Bassoon</button>
+                        <button class="instr-toggle" data-pos="3" data-val="contrabassoon" style="padding: 10px; font-size: 0.65rem; background: #222;">Contrabassoon</button>
+                    </div>
+                </div>
+                <!-- Drumset / Percussion -->
+                <div class="pos-row" style="margin-bottom: 10px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 0.8rem; opacity: 0.8;">Vitalia Agrba</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="instr-toggle" data-pos="4" data-val="drumset" style="padding: 10px; font-size: 0.65rem; background: #222;">Drumset</button>
+                        <button class="instr-toggle" data-pos="4" data-val="percussion" style="padding: 10px; font-size: 0.65rem; background: #222;">Percussion</button>
+                    </div>
+                </div>
+                <!-- Piano / Theremin -->
+                <div class="pos-row" style="margin-bottom: 10px; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size: 0.8rem; opacity: 0.8;">Valentina Donato</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="instr-toggle" data-pos="5" data-val="piano" style="padding: 10px; font-size: 0.65rem; background: #222;">Piano</button>
+                        <button class="instr-toggle" data-pos="5" data-val="theremin" style="padding: 10px; font-size: 0.65rem; background: #222;">Theremin</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="status-bar">
             <div class="indicator">
                 <div class="dot" id="status-dot"></div>
@@ -163,29 +236,56 @@
         const statusText = document.getElementById('status-text');
         const statusDot = document.getElementById('status-dot');
 
+        const colorInput = document.getElementById('color-input');
+        const updateColorBtn = document.getElementById('update-color-btn');
+        const instrToggles = document.querySelectorAll('.instr-toggle');
+        const adminSectionList = document.getElementById('admin-section-list');
+
         const sections = [
             { name: "Entry Loop", duration: 0 },
-            { name: "Activation", duration: 2 },
-            { name: "Exploratory Field", duration: 4 },
-            { name: "Latent Space Walk", duration: 2 },
-            { name: "Orbit", duration: 1 },
-            { name: "Deepfake", duration: 2 },
-            { name: "Ghost Takeover", duration: 2 },
-            { name: "Digital Error", duration: 1 },
-            { name: "Rarefied", duration: 2 },
-            { name: "Pointillism", duration: 2 },
-            { name: "Digital Rain", duration: 2 },
-            { name: "Etheric + Melody", duration: 2 },
-            { name: "Whisper Network", duration: 2 },
-            { name: "Groups + Spatialisation + Imitation + Memory Leak", duration: 2 },
-            { name: "Ghost Swarm", duration: 2 },
-            { name: "Collective Swell", duration: 1 },
-            { name: "Post-Digital Tempest", duration: 1 },
-            { name: "Buffer Error", duration: 2 },
-            { name: "Resonator", duration: 2 },
-            { name: "Micro + Slow Movement", duration: 3 },
-            { name: "Upload Ascension", duration: 4 }
+            { name: "Activation", duration: 2.667 },
+            { name: "Exploratory Field", duration: 4.167 },
+            { name: "Latent Space Walk", duration: 2.8 },
+            { name: "Orbital Deepfake", duration: 2.9 },
+            { name: "Ghost Takeover", duration: 1.233 },
+            { name: "Digital Error", duration: 1.533 },
+            { name: "Void", duration: 1 },
+            { name: "Virtual Rain", duration: 2.1 },
+            { name: "Lyric Stream", duration: 2.367 },
+            { name: "Gear Network", duration: 1.633 },
+            { name: "Memory Leak", duration: 3.067 },
+            { name: "Ghost Swarm", duration: 1.8 },
+            { name: "Post-Digital Tempest", duration: 1.867 },
+            { name: "Buffer Error", duration: 1.733 },
+            { name: "Resonator", duration: 1.667 },
+            { name: "Micro", duration: 1.833 },
+            { name: "Upload Ascension", duration: 1.933 }
         ];
+
+        function initAdminList() {
+            adminSectionList.innerHTML = '';
+            sections.forEach((s, i) => {
+                const item = document.createElement('div');
+                item.className = 'admin-item';
+                item.style.padding = '12px 15px';
+                item.style.borderBottom = '1px solid #1a1a1a';
+                item.style.fontSize = '0.85rem';
+                item.style.display = 'flex';
+                item.style.flexDirection = 'column';
+                item.style.gap = '8px';
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>${i + 1}. ${s.name}</span>
+                        <span class="admin-status" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;"></span>
+                    </div>
+                    <div class="admin-progress-container" style="height: 2px; width: 100%; background: rgba(255,255,255,0.05); border-radius: 1px; overflow: hidden; display: none;">
+                        <div class="admin-progress-bar" style="height: 100%; width: 0%; background: #fff; transition: width 0.2s linear;"></div>
+                    </div>
+                `;
+                adminSectionList.appendChild(item);
+            });
+        }
+        initAdminList();
 
         // Connection Monitor
         const connectedRef = ref(db, ".info/connected");
@@ -209,6 +309,8 @@
                 startBtn.disabled = true;
                 startBtn.innerText = "SEQUENCE IN PROGRESS";
                 
+                updateAdminProgress(idx);
+
                 // Countdown logic (approximate client-side for UI only)
                 if (data.startTime && sections[idx].duration > 0) {
                     updateCountdown(data.startTime, sections[idx].duration);
@@ -221,25 +323,81 @@
                 countdownDisplay.innerText = "--:--";
                 startBtn.disabled = false;
                 startBtn.innerText = "START SECTION 2 (ACTIVATION)";
+                updateAdminProgress(0);
             }
         });
+
+        function updateAdminProgress(activeIdx) {
+            const items = adminSectionList.querySelectorAll('.admin-item');
+            items.forEach((item, i) => {
+                const status = item.querySelector('.admin-status');
+                const progressContainer = item.querySelector('.admin-progress-container');
+                const progressBar = item.querySelector('.admin-progress-bar');
+                
+                item.removeAttribute('data-active');
+                
+                if (i < activeIdx) {
+                    item.style.opacity = '0.4';
+                    status.innerText = 'DONE';
+                    status.style.color = '#888';
+                    progressContainer.style.display = 'none';
+                } else if (i === activeIdx) {
+                    item.style.opacity = '1';
+                    item.style.background = 'rgba(255,255,255,0.03)';
+                    status.innerText = 'LIVE';
+                    status.style.color = 'var(--accent)';
+                    item.setAttribute('data-active', 'true');
+                    
+                    // Show progress bar only if sequence is running and duration > 0
+                    const isRunning = startBtn.disabled; // startBtn disabled means running
+                    if (isRunning && sections[i].duration > 0) {
+                        progressContainer.style.display = 'block';
+                    } else {
+                        progressContainer.style.display = 'none';
+                    }
+                } else {
+                    item.style.opacity = '0.2';
+                    status.innerText = '';
+                    item.style.background = 'transparent';
+                    progressContainer.style.display = 'none';
+                    progressBar.style.width = '0%';
+                }
+            });
+            // Scroll to active item in admin list
+            const active = items[activeIdx];
+            if (active) {
+                active.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
 
         let countdownInterval;
         function updateCountdown(startTime, durationMin) {
             if (countdownInterval) clearInterval(countdownInterval);
+            
             const durationMs = durationMin * 60 * 1000;
             
-            const tick = () => {
+            countdownInterval = setInterval(() => {
                 const elapsed = Date.now() - (startTime - (window.serverTimeOffset || 0));
-                const remaining = Math.max(0, durationMs - elapsed);
+                const remaining = durationMs - elapsed;
+                
+                // Find active section's progress bar in the list
+                const activeItem = adminSectionList.querySelector('.admin-item[data-active="true"]');
+                const progressBar = activeItem ? activeItem.querySelector('.admin-progress-bar') : null;
+                
+                if (remaining <= 0) {
+                    countdownDisplay.innerText = "00:00";
+                    if (progressBar) progressBar.style.width = '100%';
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                const progress = Math.min(100, (elapsed / durationMs) * 100);
+                if (progressBar) progressBar.style.width = `${progress}%`;
+
                 const mins = Math.floor(remaining / 60000);
                 const secs = Math.floor((remaining % 60000) / 1000);
-                countdownDisplay.innerText = `${mins}:${secs.toString().padStart(2, '0')}`;
-                if (remaining <= 0) clearInterval(countdownInterval);
-            };
-            
-            countdownInterval = setInterval(tick, 1000);
-            tick();
+                countdownDisplay.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 200);
         }
 
         // Server time offset
@@ -260,10 +418,64 @@
 
         // Reset Sequence
         resetBtn.addEventListener('click', () => {
+            // Reset sequence
             set(ref(db, 'sequence'), {
                 currentIndex: 0,
                 startTime: 0,
                 isRunning: false
+            });
+            // Reset instruments
+            set(ref(db, 'config/instruments'), {
+                pos3: 'bassoon',
+                pos4: 'drumset',
+                pos5: 'piano'
+            });
+            // Reset color tint to black (none)
+            set(ref(db, 'config/color'), '#000000');
+        });
+
+        // Color Control
+        updateColorBtn.addEventListener('click', () => {
+            const color = colorInput.value;
+            if (/^#[0-9A-F]{6}$/i.test(color)) {
+                set(ref(db, 'config/color'), color);
+            } else {
+                alert("Please enter a valid Hex code (e.g., #FFFFFF)");
+            }
+        });
+
+        onValue(ref(db, 'config/color'), (snap) => {
+            if (snap.exists()) colorInput.value = snap.val();
+        });
+
+        // Instrument Positions Control
+        instrToggles.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pos = btn.dataset.pos;
+                const val = btn.dataset.val;
+                set(ref(db, `config/instruments/pos${pos}`), val);
+            });
+        });
+
+        onValue(ref(db, 'config/instruments'), (snap) => {
+            const data = snap.val() || {};
+            
+            // Update button styles
+            const positions = [3, 4, 5];
+            positions.forEach(p => {
+                const currentVal = data[`pos${p}`];
+                if (currentVal) {
+                    // Highlight active buttons
+                    document.querySelectorAll(`.instr-toggle[data-pos="${p}"]`).forEach(btn => {
+                        if (btn.dataset.val === currentVal) {
+                            btn.style.background = 'var(--accent)';
+                            btn.style.opacity = '1';
+                        } else {
+                            btn.style.background = '#222';
+                            btn.style.opacity = '0.5';
+                        }
+                    });
+                }
             });
         });
     </script>

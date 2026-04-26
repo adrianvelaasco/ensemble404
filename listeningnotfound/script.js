@@ -22,14 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const musicians = {
-        'bassoon': { name: 'Rodrigo Rodrigues', profession: 'Bassoonist' },
-        'contrabassoon': { name: 'Rodrigo Rodrigues', profession: 'Contrabassoonist' },
-        'flute': { name: 'Giusy Panzanaro', profession: 'Flutist' },
-        'piano': { name: 'Valentina Donato', profession: 'Pianist' },
-        'theremin': { name: 'Valentina Donato', profession: 'Thereminist' },
-        'percussion': { name: 'Vitalia Agrba', profession: 'Percussionist' },
-        'drum kit': { name: 'Vitalia Agrba', profession: 'Drummer' },
-        'violin': { name: 'Bahar Erünsal', profession: 'Violinist' }
+        'bassoon': { name: 'Rodrigo Rodrigues', profession: 'Bassoon' },
+        'contrabassoon': { name: 'Rodrigo Rodrigues', profession: 'Contrabassoon' },
+        'flute': { name: 'Giusy Panzanaro', profession: 'Flute' },
+        'piano': { name: 'Valentina Donato', profession: 'Piano' },
+        'theremin': { name: 'Valentina Donato', profession: 'Theremin' },
+        'percussion': { name: 'Vitalia Agrba', profession: 'Percussion' },
+        'drum kit': { name: 'Vitalia Agrba', profession: 'Drum Kit' },
+        'violin': { name: 'Bahar Erünsal', profession: 'Violin' }
     };
 
     const fohProfiles = [
@@ -49,27 +49,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // SECTION SEQUENCE DATA
     const sections = [
-        { name: "Entry Loop", duration: 0, description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
-        { name: "Activation", duration: 2, description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." },
-        { name: "Exploratory Field", duration: 4, description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
-        { name: "Latent Space Walk", duration: 2, description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-        { name: "Orbit", duration: 1, description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium." },
-        { name: "Deepfake", duration: 2, description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur." },
-        { name: "Ghost Takeover", duration: 2, description: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit." },
-        { name: "Digital Error", duration: 1, description: "Aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis." },
-        { name: "Rarefied", duration: 2, description: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur." },
-        { name: "Pointillism", duration: 2, description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum." },
-        { name: "Digital Rain", duration: 2, description: "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est." },
-        { name: "Etheric + Melody", duration: 2, description: "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias." },
-        { name: "Whisper Network", duration: 2, description: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et." },
-        { name: "Groups + Spatialisation + Imitation + Memory Leak", duration: 2, description: "Error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo." },
-        { name: "Ghost Swarm", duration: 2, description: "Inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem." },
-        { name: "Collective Swell", duration: 1, description: "Quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione." },
-        { name: "Post-Digital Tempest", duration: 1, description: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit." },
-        { name: "Buffer Error", duration: 2, description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium." },
-        { name: "Resonator", duration: 2, description: "Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta." },
-        { name: "Micro + Slow Movement", duration: 3, description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur." },
-        { name: "Upload Ascension", duration: 4, description: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur." }
+        { name: "Entry Loop", duration: 0, description: "Initial ambient state." },
+        { name: "Activation", duration: 2.667, description: "Activation of spatial nodes." },
+        { name: "Exploratory Field", duration: 4.167, description: "Sonic exploration of the physical space." },
+        { name: "Latent Space Walk", duration: 2.8, description: "Traversing the digital latent dimensions." },
+        { name: "Orbital Deepfake", duration: 2.9, description: "Simulated orbital spatialisation." },
+        { name: "Ghost Takeover", duration: 1.233, description: "Spectral elements dominate the soundscape." },
+        { name: "Digital Error", duration: 1.533, description: "Intentional artifacts and glitches." },
+        { name: "Void", duration: 1, description: "Moment of silence and spatial emptiness." },
+        { name: "Virtual Rain", duration: 2.1, description: "Dense granular textures." },
+        { name: "Lyric Stream", duration: 2.367, description: "Melodic lines emerging from the noise." },
+        { name: "Gear Network", duration: 1.633, description: "Mechanical and rhythmic interplay." },
+        { name: "Memory Leak", duration: 3.067, description: "Recursive sound patterns and accumulation." },
+        { name: "Ghost Swarm", duration: 1.8, description: "Collective spectral movement." },
+        { name: "Post-Digital Tempest", duration: 1.867, description: "Violent digital transformation." },
+        { name: "Buffer Error", duration: 1.733, description: "Temporal stuttering and delay loops." },
+        { name: "Resonator", duration: 1.667, description: "Harmonic resonance and spatial tuning." },
+        { name: "Micro", duration: 1.833, description: "Close-up detail and slow movement." },
+        { name: "Upload Ascension", duration: 1.933, description: "Final spatial ascent." }
     ];
 
     let currentSequenceData = { currentIndex: 0, startTime: 0, isRunning: false };
@@ -90,10 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
             item.className = 'section-item';
             item.dataset.index = i;
             item.innerHTML = `
-                <div class="section">[${toRoman(i+1)}] ${s.name}</div>
+                <div class="section">${i + 1}. ${s.name}</div>
                 <div class="status-container" style="width: 100%; display: flex; justify-content: center; height: 15px;"></div>
             `;
-            item.addEventListener('click', () => openSectionModal(s));
+            item.addEventListener('click', () => {
+                if (parseInt(item.dataset.index) <= currentSequenceData.currentIndex) {
+                    openSectionModal(s);
+                }
+            });
             sectionList.appendChild(item);
         });
     }
@@ -103,9 +104,27 @@ document.addEventListener('DOMContentLoaded', () => {
         carouselControls.style.display = 'none';
         modalImage.style.display = 'none';
         modalTitle.textContent = section.name;
-        modalDescription.innerHTML = `<span style="font-size: 0.7rem; opacity: 0.5; display: block; margin-bottom: 10px;">SECTION [${toRoman(sections.indexOf(section)+1)}]</span>` + section.description;
+        modalDescription.innerHTML = section.description;
         modalOverlay.classList.add('active');
     }
+
+    // CACHE SYSTEM FOR BIOS
+    const bioCache = {};
+
+    async function preloadBios() {
+        const biosToLoad = ['bassoon', 'flute', 'piano', 'percussion', 'violin', 'oscar', 'adri', 'isay'];
+        for (const id of biosToLoad) {
+            try {
+                const response = await fetch('profiles/' + id + '.txt');
+                if (response.ok) {
+                    bioCache[id] = await response.text();
+                }
+            } catch (e) {
+                console.warn(`Could not preload bio for ${id}`);
+            }
+        }
+    }
+    preloadBios();
 
     // SYNC BIO (REVERTED TO STATIC FILES)
     function syncBio(id, fallbackFile, targetEl) {
@@ -113,10 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchBioFromFile(filename, targetEl) {
+        const id = filename.replace('.txt', '');
+        if (bioCache[id]) {
+            targetEl.innerHTML = formatText(bioCache[id]);
+            return;
+        }
+
         try {
             const response = await fetch('profiles/' + filename);
             if (response.ok) {
                 const text = await response.text();
+                bioCache[id] = text; // Cache it for next time
                 targetEl.innerHTML = formatText(text);
             } else {
                 targetEl.innerText = "No technical description found.";
@@ -152,8 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach((item, i) => {
             const statusContainer = item.querySelector('.status-container');
             
-            item.style.display = 'flex';
-            item.classList.remove('active', 'completed');
+            // Show current, completed, and the NEXT one
+            item.style.display = i <= (activeIdx + 1) ? 'flex' : 'none';
+            item.classList.remove('active', 'completed', 'next-teaser');
+            item.style.opacity = '1';
+            item.style.pointerEvents = 'auto';
             statusContainer.innerHTML = '';
 
             if (i < activeIdx) {
@@ -168,17 +197,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 }
+            } else if (i === activeIdx + 1) {
+                item.classList.add('next-teaser');
+                item.style.opacity = '0.3';
+                item.style.pointerEvents = 'none';
+                statusContainer.innerHTML = '<span class="status-text" style="font-size: 0.5rem; opacity: 0.5;">NEXT UP</span>';
             }
         });
 
-        if (!isUserScrolling) {
-            resyncBtn.classList.remove('visible');
-            const activeItem = sectionList.querySelector('.section-item.active');
-            if (activeItem) {
-                activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const activeItem = sectionList.querySelector('.section-item.active');
+        if (activeItem) {
+            // If the section just changed, force a jump even if user was scrolling
+            const forceJump = (typeof lastActiveIndex !== 'undefined' && lastActiveIndex !== activeIdx);
+            
+            if (!isUserScrolling || forceJump) {
+                resyncBtn.classList.remove('visible');
+                isResyncing = true;
+                setTimeout(() => {
+                    activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => { isResyncing = false; }, 1000);
+                }, 100);
             }
         }
-        
+        window.lastActiveIndex = activeIdx;
+
         // Manual update of visual active state
         updateVisualFocus();
     }
@@ -287,11 +329,93 @@ document.addEventListener('DOMContentLoaded', () => {
             serverTimeOffset = snap.val() || 0;
         });
 
+        const instrRef = window.firebaseRef(window.firebaseDB, 'config/instruments');
+        let prevInstruments = {};
+
+        window.firebaseOnValue(instrRef, (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+
+            const mapping = {
+                'bassoon': 'Bassoon',
+                'contrabassoon': 'Contrabassoon',
+                'drumset': 'Drum Kit',
+                'percussion': 'Percussion',
+                'piano': 'Piano',
+                'theremin': 'Theremin'
+            };
+
+            const pairs = [
+                { opt1: 'bassoon', opt2: 'contrabassoon', key: 'pos3' },
+                { opt1: 'drumset', opt2: 'percussion', key: 'pos4' },
+                { opt1: 'piano', opt2: 'theremin', key: 'pos5' }
+            ];
+
+            pairs.forEach(pair => {
+                const currentVal = data[pair.key];
+                const prevVal = prevInstruments[pair.key];
+
+                if (currentVal && prevVal && currentVal !== prevVal) {
+                    const sourceTitle = mapping[prevVal];
+                    const targetTitle = mapping[currentVal];
+                    const sourceEl = Array.from(spots).find(s => s.getAttribute('title') === sourceTitle);
+                    const targetEl = Array.from(spots).find(s => s.getAttribute('title') === targetTitle);
+                    
+                    if (sourceEl && targetEl && sourceEl.classList.contains('has-image')) {
+                        triggerFlight(sourceEl, targetEl);
+                    }
+                } else if (currentVal && !prevVal) {
+                    // Initial load sync
+                    const activeTitle = mapping[currentVal];
+                    const inactiveTitle = mapping[currentVal === pair.opt1 ? pair.opt2 : pair.opt1];
+                    const activeEl = Array.from(spots).find(s => s.getAttribute('title') === activeTitle);
+                    const inactiveEl = Array.from(spots).find(s => s.getAttribute('title') === inactiveTitle);
+                    
+                    if (activeEl && inactiveEl && !activeEl.classList.contains('has-image')) {
+                        if (inactiveEl.classList.contains('has-image')) {
+                            const img = inactiveEl.style.backgroundImage;
+                            inactiveEl.style.backgroundImage = 'none';
+                            inactiveEl.classList.remove('has-image');
+                            activeEl.style.backgroundImage = img;
+                            activeEl.classList.add('has-image');
+                        }
+                    }
+                }
+                prevInstruments[pair.key] = currentVal;
+            });
+        });
+
         window.firebaseOnValue(seqRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 currentSequenceData = data;
                 updateSectionUI();
+                updateVisualFocus();
+            }
+        });
+
+        // --- Color Tint Sync ---
+        const colorRef = window.firebaseRef(window.firebaseDB, 'config/color');
+        let tintOverlay = document.getElementById('bg-tint-overlay');
+        if (!tintOverlay) {
+            tintOverlay = document.createElement('div');
+            tintOverlay.id = 'bg-tint-overlay';
+            Object.assign(tintOverlay.style, {
+                position: 'fixed',
+                top: 0, left: 0, width: '100%', height: '100%',
+                pointerEvents: 'none',
+                zIndex: '-1',
+                transition: 'background-color 2s ease',
+                backgroundColor: 'transparent'
+            });
+            document.body.appendChild(tintOverlay);
+        }
+
+        window.firebaseOnValue(colorRef, (snap) => {
+            const color = snap.val();
+            if (color && /^#[0-9A-F]{6}$/i.test(color)) {
+                // Add 4D for ~30% opacity in hex
+                tintOverlay.style.backgroundColor = color + '4D';
             }
         });
     }
@@ -447,15 +571,13 @@ document.addEventListener('DOMContentLoaded', () => {
     spots.forEach(spot => {
         spot.addEventListener('click', () => {
             const title = spot.getAttribute('title');
-            const lowerTitle = title.toLowerCase();
-            if (pairedInstruments[lowerTitle] && !spot.classList.contains('has-image')) {
-                const partnerTitleMatch = pairedInstruments[lowerTitle];
-                let partnerElement = Array.from(spots).find(s => s.getAttribute('title').toLowerCase() === partnerTitleMatch);
-                if (partnerElement && partnerElement.classList.contains('has-image')) {
-                    triggerFlight(partnerElement, spot);
-                    return;
-                }
+            
+            if (!spot.classList.contains('has-image')) {
+                spot.classList.add('buzz');
+                setTimeout(() => spot.classList.remove('buzz'), 300);
+                return;
             }
+
             openModal(spot);
         });
     });
@@ -472,40 +594,80 @@ document.addEventListener('DOMContentLoaded', () => {
         const pRect = sourceEl.getBoundingClientRect();
         const cRect = targetEl.getBoundingClientRect();
         const originalBg = sourceEl.style.backgroundImage;
+        
+        // Centers for the line
+        const x1 = pRect.left + pRect.width / 2;
+        const y1 = pRect.top + pRect.height / 2;
+        const x2 = cRect.left + cRect.width / 2;
+        const y2 = cRect.top + cRect.height / 2;
+        const dist = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+        const angle = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
+
+        // 1. Create the dashed line
+        const line = document.createElement('div');
+        Object.assign(line.style, {
+            position: 'fixed',
+            top: y1 + 'px',
+            left: x1 + 'px',
+            width: dist + 'px',
+            height: '1px',
+            background: 'repeating-linear-gradient(90deg, white 0, white 4px, transparent 4px, transparent 8px)',
+            transformOrigin: '0 50%',
+            transform: `rotate(${angle}deg)`,
+            opacity: '0',
+            zIndex: '9998',
+            pointerEvents: 'none',
+            transition: 'opacity 0.3s ease, clip-path 4s ease-in-out',
+            clipPath: 'inset(0 0 0 0)',
+            filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))'
+        });
+        document.body.appendChild(line);
+
+        // 2. Setup the flying photo (but don't move it yet)
         sourceEl.style.backgroundImage = 'none';
         sourceEl.classList.remove('has-image');
+        
         const flyingPhoto = document.createElement('div');
         Object.assign(flyingPhoto.style, {
-            position: 'fixed', top: pRect.top + 'px', left: pRect.left + 'px',
-            width: pRect.width + 'px', height: pRect.height + 'px',
-            backgroundImage: originalBg, backgroundSize: 'cover', backgroundPosition: 'center',
-            borderRadius: '8px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', zIndex: '9999',
-            transition: 'all 4s ease-in-out', pointerEvents: 'none'
+            position: 'fixed',
+            top: pRect.top + 'px',
+            left: pRect.left + 'px',
+            width: pRect.width + 'px',
+            height: pRect.height + 'px',
+            backgroundImage: originalBg,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            borderRadius: '8px',
+            boxShadow: 'var(--neon-shadow)',
+            zIndex: '9999',
+            transition: 'transform 4s ease-in-out, opacity 0.3s ease',
+            pointerEvents: 'none'
         });
         document.body.appendChild(flyingPhoto);
-        flyingPhoto.offsetWidth;
-        const randomRotation = Math.random() > 0.5 ? 360 : -360;
-        flyingPhoto.style.transform = `translate(${cRect.left - pRect.left}px, ${cRect.top - pRect.top}px) rotate(${randomRotation}deg) scale(1.2)`;
-        targetEl.style.pointerEvents = 'none';
-        setTimeout(() => {
-            flyingPhoto.remove();
-            targetEl.style.backgroundImage = originalBg;
-            targetEl.classList.add('has-image');
-            targetEl.style.pointerEvents = 'auto';
-        }, 4100);
-    }
 
-    const automaticPairs = [['bassoon', 'contrabassoon'], ['piano', 'theremin'], ['percussion', 'drum kit']];
-    function scheduleRandomFlight(pairArr) {
+        // Show the line first
+        setTimeout(() => { line.style.opacity = '0.4'; }, 50);
+
+        // 3. Start the animation after a short delay
         setTimeout(() => {
-            const spotA = Array.from(spots).find(s => s.getAttribute('title').toLowerCase() === pairArr[0]);
-            const spotB = Array.from(spots).find(s => s.getAttribute('title').toLowerCase() === pairArr[1]);
-            if (spotA && spotB) {
-                if (spotA.classList.contains('has-image') && !spotB.classList.contains('has-image')) triggerFlight(spotA, spotB);
-                else if (spotB.classList.contains('has-image') && !spotA.classList.contains('has-image')) triggerFlight(spotB, spotA);
-            }
-            scheduleRandomFlight(pairArr);
-        }, Math.random() * 80000 + 40000);
+            flyingPhoto.offsetWidth; // force reflow
+            flyingPhoto.style.transform = `translate(${cRect.left - pRect.left}px, ${cRect.top - pRect.top}px)`;
+            line.style.clipPath = 'inset(0 0 0 100%)';
+            
+            targetEl.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                flyingPhoto.style.opacity = '0';
+                line.style.opacity = '0';
+                setTimeout(() => {
+                    flyingPhoto.remove();
+                    line.remove();
+                    targetEl.style.backgroundImage = originalBg;
+                    targetEl.classList.add('has-image');
+                    targetEl.style.pointerEvents = 'auto';
+                }, 300);
+            }, 4000);
+        }, 600); // 600ms delay to show the line before flight
     }
-    automaticPairs.forEach(pair => scheduleRandomFlight(pair));
 });
+

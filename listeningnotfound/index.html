@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.2">
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -37,7 +37,34 @@
 </head>
 
 <body>
-    <header class="glitch-header">
+    <!-- Landing Page -->
+    <div id="landing-page" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; background: url('landing_bg.png') no-repeat center center/cover; text-align: center;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="landing-content" style="position: relative; z-index: 1;">
+            <h1 style="font-size: clamp(2rem, 8vw, 4.5rem); letter-spacing: 0.25em; margin-bottom: 4rem; text-shadow: 0 0 30px rgba(255,255,255,0.2); font-weight: 200;">WELCOME</h1>
+            
+            <div class="landing-buttons">
+                <div class="landing-row">
+                    <button id="info-lnf-btn" class="landing-btn primary">Listening Not Found</button>
+                    <button id="info-ensemble-btn" class="landing-btn primary">Ensemble 404</button>
+                </div>
+                <button id="enter-room-btn" class="landing-btn secondary main-btn">Go to the room</button>
+            </div>
+        </div>
+        <button id="info-credits-btn" class="landing-btn secondary credits-btn" style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: auto; min-width: 200px; z-index: 2;">Credits</button>
+    </div>
+
+    <!-- Landing Modal -->
+    <div id="landing-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; justify-content: center; align-items: center; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);">
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 50px; border-radius: 15px; max-width: 650px; width: 90%; position: relative; max-height: 85vh; overflow-y: auto; text-align: left;">
+            <button id="close-landing-modal" style="position: absolute; top: 25px; right: 25px; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; opacity: 0.5; transition: opacity 0.3s;">&times;</button>
+            <div id="landing-modal-content"></div>
+        </div>
+    </div>
+
+    <div id="main-app" style="display: none; opacity: 0; transition: opacity 1s ease; position: fixed; top: 0; left: 0; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; z-index: 10;">
+        <button id="back-to-welcome-btn" style="position: fixed; bottom: 2.5vh; left: 40px; background: none; border: none; color: #fff; font-size: 2.2rem; cursor: pointer; z-index: 1000; opacity: 1; text-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.2); transition: all 0.3s ease;">&#8592;</button>
+        <header class="glitch-header">
         <div class="marquee-track">
             <div class="marquee-item">
                 <div class="glitch-text" data-text="Listening Not Found">Listening Not Found</div>
@@ -50,10 +77,6 @@
         </div>
     </header>
 
-    <nav class="top-nav">
-        <button id="btn-listening" class="custom-nav-btn">Listening Not Found</button>
-        <button id="btn-ensemble" class="custom-nav-btn">Ensemble 404</button>
-    </nav>
 
     <main class="container">
         <div class="canvas-container">
@@ -87,21 +110,6 @@
                     <div class="spot spot-8 has-image" title="Bassoon"
                         style="background-image: url('profiles/bassoon.jpg')"></div>
 
-                    <!-- Exits -->
-                    <div class="exit-icon top-left">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                            <polyline points="16 17 21 12 16 7" />
-                            <line x1="21" y1="12" x2="9" y2="12" />
-                        </svg>
-                    </div>
-                    <div class="exit-icon bottom-left">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                            <polyline points="16 17 21 12 16 7" />
-                            <line x1="21" y1="12" x2="9" y2="12" />
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>
@@ -116,14 +124,12 @@
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
+            <div class="modal-image" id="modal-image"></div>
             <div class="modal-content-wrapper">
                 <div id="modal-dynamic-content">
-                    <div class="modal-image" id="modal-image"></div>
-
                     <div class="modal-content">
                         <h2 id="modal-title">Name</h2>
                         <div class="cv-divider"></div>
-                        <div class="cv-section-title">PROFILE SUMMARY</div>
                         <p id="modal-description">Loading details...</p>
                     </div>
                 </div>
@@ -137,7 +143,118 @@
         </div>
     </div>
 
+    </div>
+
     <script src="script.js"></script>
+    <script>
+        document.getElementById('enter-room-btn').addEventListener('click', () => {
+            const landing = document.getElementById('landing-page');
+            const main = document.getElementById('main-app');
+            
+            landing.style.transition = 'opacity 1s ease, transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            landing.style.opacity = '0';
+            landing.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                landing.style.display = 'none';
+                main.style.display = 'block';
+                setTimeout(() => {
+                    main.style.opacity = '1';
+                }, 50);
+            }, 1000);
+        });
+
+        document.getElementById('back-to-welcome-btn').addEventListener('click', () => {
+            const landing = document.getElementById('landing-page');
+            const main = document.getElementById('main-app');
+            
+            main.style.opacity = '0';
+            setTimeout(() => {
+                main.style.display = 'none';
+                landing.style.display = 'flex';
+                setTimeout(() => {
+                    landing.style.opacity = '1';
+                    landing.style.transform = 'scale(1)';
+                }, 50);
+            }, 1000);
+        });
+
+        const landingModal = document.getElementById('landing-modal');
+        const landingModalContent = document.getElementById('landing-modal-content');
+        
+        async function showLandingModal(type) {
+            landingModalContent.innerHTML = '<p style="opacity: 0.5;">Loading...</p>';
+            landingModal.style.display = 'flex';
+            landingModal.style.opacity = '0';
+            setTimeout(() => landingModal.style.opacity = '1', 10);
+            
+            if (type === 'credits') {
+                const credits = [
+                    { category: "CONCEPT & DESIGN" },
+                    { name: "Oscar Corpo", role: "Composer - Artistic Director" },
+                    { name: "Isay Ramirez", role: "Sound Engineer" },
+                    { name: "Adri Velasco", role: "Video, Light, Web Design" },
+                    { category: "MUSICIANS" },
+                    { name: "Bahar Erünsal", role: "Violin" },
+                    { name: "Giusy Panzanaro", role: "Flute" },
+                    { name: "Rodrigo Rodrigues", role: "Bassoon - Contrabassoon" },
+                    { name: "Vitalia Agrba", role: "Drumset - Percussion" },
+                    { name: "Valentina Donato", role: "Piano - Theremin" }
+                ];
+
+                let html = `<h2 style="margin-bottom: 40px; letter-spacing: 0.2em; font-weight: 200; font-size: 2rem; color: #fff; text-align: center;">CREDITS</h2>`;
+                html += `<div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">`;
+                credits.forEach(c => {
+                    if (c.category) {
+                        html += `<div style="margin-top: 40px; margin-bottom: 20px; font-size: 0.7rem; opacity: 0.3; letter-spacing: 0.4em; font-weight: 700; text-align: center; width: 100%; text-transform: uppercase;">— ${c.category} —</div>`;
+                    } else {
+                        html += `
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <div style="font-weight: 400; color: #fff; letter-spacing: 0.05em; font-size: 1.1rem; margin-bottom: 4px;">${c.name}</div>
+                                <div style="opacity: 0.5; font-size: 0.85rem; font-style: italic;">${c.role}</div>
+                            </div>
+                        `;
+                    }
+                });
+                html += `</div>`;
+                landingModalContent.innerHTML = html;
+                return;
+            }
+
+            try {
+                const fileName = type === 'lnf' ? 'listeningnotfound.txt' : 'ensemble404.txt';
+                const response = await fetch(fileName);
+                const text = await response.text();
+                
+                let html = `<h2 style="margin-bottom: 30px; letter-spacing: 0.2em; font-weight: 200; font-size: 2rem; color: #fff;">${type === 'lnf' ? 'LISTENING NOT FOUND' : 'ENSEMBLE 404'}</h2>`;
+                
+                if (type === 'ensemble') {
+                    html += `<div style="text-align: center; margin-bottom: 30px;"><img src="ensemble404logo.png" style="max-width: 180px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));"></div>`;
+                }
+                
+                html += `<div style="line-height: 1.8; opacity: 0.95; font-size: 1rem; color: #fff; white-space: pre-wrap; text-align: center;">${text}</div>`;
+                landingModalContent.innerHTML = html;
+            } catch (err) {
+                landingModalContent.innerHTML = '<p>Error loading content.</p>';
+            }
+        }
+
+        document.getElementById('info-lnf-btn').addEventListener('click', () => showLandingModal('lnf'));
+        document.getElementById('info-ensemble-btn').addEventListener('click', () => showLandingModal('ensemble'));
+        document.getElementById('info-credits-btn').addEventListener('click', () => showLandingModal('credits'));
+        
+        document.getElementById('close-landing-modal').addEventListener('click', () => {
+            landingModal.style.opacity = '0';
+            setTimeout(() => landingModal.style.display = 'none', 300);
+        });
+
+        landingModal.addEventListener('click', (e) => {
+            if (e.target === landingModal) {
+                landingModal.style.opacity = '0';
+                setTimeout(() => landingModal.style.display = 'none', 300);
+            }
+        });
+    </script>
 </body>
 
 </html>
