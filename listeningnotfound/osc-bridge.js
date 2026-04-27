@@ -1,7 +1,7 @@
 const { Server } = require('node-osc');
 const { WebSocketServer } = require('ws');
 const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, set } = require('firebase/database');
+const { getDatabase, ref, set, update } = require('firebase/database');
 
 // Configuration
 const OSC_PORT = 53001;
@@ -165,6 +165,34 @@ oscServer.on('message', (msg) => {
       set(ref(db, 'config/instruments/pos5'), 'piano');
       set(ref(db, 'config/color'), '#000000');
     }
+  }
+
+  // Handle Section Loading Commands (lowercase slugs)
+  const sectionSlugs = [
+    'entryloop', 'activation', 'exploratoryfield', 'latentspacewalk', 
+    'orbitaldeepfake', 'ghosttakeover', 'digitalerror', 'void', 
+    'virtualrain', 'lyricstream', 'gearnetwork', 'memoryleak', 
+    'ghostswarm', 'postdigitaltempest', 'buffererror', 'resonator', 
+    'micro', 'uploadascension'
+  ];
+
+  const sectionIndex = sectionSlugs.indexOf(lowerAddress.replace('/', ''));
+  if (sectionIndex !== -1) {
+    console.log(`[FIREBASE] Loading Section ${sectionIndex + 1}: ${sectionSlugs[sectionIndex]}`);
+    set(ref(db, 'sequence'), {
+      currentIndex: sectionIndex,
+      startTime: 0,
+      isRunning: false
+    });
+  }
+
+  // Handle /startagain command
+  if (lowerAddress === '/startagain') {
+    console.log('[FIREBASE] Starting/Resuming Sequence via /startagain');
+    update(ref(db, 'sequence'), {
+      startTime: Date.now(),
+      isRunning: true
+    });
   }
 });
 
