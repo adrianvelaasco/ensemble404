@@ -27,6 +27,17 @@ body {
     position: relative;
 }
 
+.tint-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    transition: background-color 20s linear !important;
+}
+
 /* Glitch Marquee Header */
 .glitch-header {
     position: fixed;
@@ -38,6 +49,7 @@ body {
     backdrop-filter: blur(10px);
     z-index: 100;
     overflow: hidden;
+    transition: background-color 20s linear !important;
 }
 
 .marquee-track {
@@ -327,12 +339,30 @@ body {
     border-radius: 8px;
     box-shadow: var(--neon-shadow);
     z-index: 10;
+    transition: transform 0.2s;
+    background-image: none !important;
+    overflow: hidden;
 }
 
-.spot.has-image {
+.spot::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: var(--photo-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    transition: opacity 2s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spot.has-image::after {
+    opacity: 1;
+}
+
+.photo-hidden::after {
+    opacity: 0 !important;
 }
 
 /* Inside placement */
@@ -560,8 +590,9 @@ body {
     transform: scale(1.3);
 }
 
-.spot { cursor: pointer; transition: transform 0.2s; }
-.spot:hover { transform: scale(1.1); z-index: 20; }
+.spot { cursor: default; }
+.spot.has-image:not(.photo-hidden) { cursor: pointer; }
+.spot.has-image:not(.photo-hidden):hover { transform: scale(1.1); z-index: 20; }
 .foh-box { cursor: pointer; }
 
 /* TOP NAVIGATION BUTTONS */

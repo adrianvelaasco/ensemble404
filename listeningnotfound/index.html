@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="style.css?v=2.1">
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -95,20 +95,20 @@
                     <!-- Spots -->
                     <div class="spot spot-1" title="Theremin"></div>
                     <div class="spot spot-2 has-image" title="Violin"
-                        style="background-image: url('profiles/violin.jpg')"></div>
+                        style="--photo-url: url('profiles/violin.jpg'); background-image: url('profiles/violin.jpg')"></div>
                     <div class="spot spot-3" title="Drum Kit"></div>
                     <div class="spot spot-4 has-image" title="Piano"
-                        style="background-image: url('profiles/piano.jpg')"></div>
+                        style="--photo-url: url('profiles/piano.jpg'); background-image: url('profiles/piano.jpg')"></div>
                     <div class="spot spot-5" title="Contrabassoon"></div>
                     <div class="spot spot-6 has-image" title="Flute"
-                        style="background-image: url('profiles/flute.jpg')"></div>
+                        style="--photo-url: url('profiles/flute.jpg'); background-image: url('profiles/flute.jpg')"></div>
                     <div class="spot spot-7 has-image" title="Percussion"
-                        style="background-image: url('profiles/percussion.jpg')"></div>
+                        style="--photo-url: url('profiles/percussion.jpg'); background-image: url('profiles/percussion.jpg')"></div>
 
                     <div class="foh-box">FOH</div>
 
                     <div class="spot spot-8 has-image" title="Bassoon"
-                        style="background-image: url('profiles/bassoon.jpg')"></div>
+                        style="--photo-url: url('profiles/bassoon.jpg'); background-image: url('profiles/bassoon.jpg')"></div>
 
                 </div>
             </div>
@@ -145,7 +145,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=2.1"></script>
     <script>
         document.getElementById('enter-room-btn').addEventListener('click', () => {
             const landing = document.getElementById('landing-page');

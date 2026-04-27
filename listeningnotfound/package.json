@@ -1,0 +1,18 @@
+{
+  "name": "listeningnotfound",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "firebase": "^12.12.1",
+    "node-osc": "^11.4.0",
+    "ws": "^8.20.0"
+  }
+}

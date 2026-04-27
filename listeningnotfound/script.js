@@ -335,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.firebaseOnValue(instrRef, (snapshot) => {
             const data = snapshot.val();
             if (!data) return;
+            console.log('Instrument Data Received:', data);
 
             const mapping = {
                 'bassoon': 'Bassoon',
@@ -375,13 +376,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (inactiveEl.classList.contains('has-image')) {
                             const img = inactiveEl.style.backgroundImage;
                             inactiveEl.style.backgroundImage = 'none';
+                            inactiveEl.style.removeProperty('--photo-url');
                             inactiveEl.classList.remove('has-image');
                             activeEl.style.backgroundImage = img;
+                            activeEl.style.setProperty('--photo-url', img);
                             activeEl.classList.add('has-image');
                         }
                     }
                 }
                 prevInstruments[pair.key] = currentVal;
+            });
+
+            // Handle Instrument Visibilities
+            const visibilityMap = {
+                'rodrigoVisible': ['Bassoon', 'Contrabassoon'],
+                'valentinaVisible': ['Piano', 'Theremin'],
+                'vitaliaVisible': ['Drum Kit', 'Percussion'],
+                'giusyVisible': ['Flute'],
+                'baharVisible': ['Violin']
+            };
+
+            Object.entries(visibilityMap).forEach(([key, instrumentTitles]) => {
+                const isVisible = data[key] !== false;
+                spots.forEach(s => {
+                    if (instrumentTitles.includes(s.getAttribute('title'))) {
+                        if (!isVisible) {
+                            s.classList.add('photo-hidden');
+                        } else {
+                            s.classList.remove('photo-hidden');
+                        }
+                    }
+                });
             });
         });
 
@@ -405,17 +430,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 top: 0, left: 0, width: '100%', height: '100%',
                 pointerEvents: 'none',
                 zIndex: '-1',
-                transition: 'background-color 2s ease',
                 backgroundColor: 'transparent'
             });
+            tintOverlay.classList.add('tint-overlay');
             document.body.appendChild(tintOverlay);
         }
 
         window.firebaseOnValue(colorRef, (snap) => {
             const color = snap.val();
             if (color && /^#[0-9A-F]{6}$/i.test(color)) {
-                // Add 4D for ~30% opacity in hex
-                tintOverlay.style.backgroundColor = color + '4D';
+                // Set opacity to 45% (72 in hex)
+                const tint = color + '72';
+                tintOverlay.style.backgroundColor = tint;
+                
+                // Also apply to header
+                const header = document.querySelector('.glitch-header');
+                if (header) {
+                    header.style.backgroundColor = tint;
+                }
             }
         });
     }
@@ -510,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modalDescription.textContent = 'Loading details...';
 
-        if (spot.classList.contains('has-image')) {
+        if (spot.classList.contains('has-image') && !spot.classList.contains('photo-hidden')) {
             const bgImage = spot.style.backgroundImage;
             const urlMatch = bgImage.match(/url\(["']?([^"']*)["']?\)/);
             if (urlMatch && urlMatch[1]) {
@@ -572,7 +604,8 @@ document.addEventListener('DOMContentLoaded', () => {
         spot.addEventListener('click', () => {
             const title = spot.getAttribute('title');
             
-            if (!spot.classList.contains('has-image')) {
+            // Prevent selection if photo is hidden or doesn't have an image
+            if (!spot.classList.contains('has-image') || spot.classList.contains('photo-hidden')) {
                 spot.classList.add('buzz');
                 setTimeout(() => spot.classList.remove('buzz'), 300);
                 return;
@@ -617,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: '0',
             zIndex: '9998',
             pointerEvents: 'none',
-            transition: 'opacity 0.3s ease, clip-path 4s ease-in-out',
+            transition: 'opacity 0.3s ease, clip-path 10s ease-in-out',
             clipPath: 'inset(0 0 0 0)',
             filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))'
         });
@@ -625,9 +658,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Setup the flying photo (but don't move it yet)
         sourceEl.style.backgroundImage = 'none';
+        sourceEl.style.removeProperty('--photo-url');
         sourceEl.classList.remove('has-image');
         
         const flyingPhoto = document.createElement('div');
+        if (sourceEl.classList.contains('photo-hidden')) {
+            flyingPhoto.classList.add('photo-hidden');
+        }
         Object.assign(flyingPhoto.style, {
             position: 'fixed',
             top: pRect.top + 'px',
@@ -640,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
             borderRadius: '8px',
             boxShadow: 'var(--neon-shadow)',
             zIndex: '9999',
-            transition: 'transform 4s ease-in-out, opacity 0.3s ease',
+            transition: 'transform 10s ease-in-out, opacity 0.3s ease',
             pointerEvents: 'none'
         });
         document.body.appendChild(flyingPhoto);
@@ -663,10 +700,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     flyingPhoto.remove();
                     line.remove();
                     targetEl.style.backgroundImage = originalBg;
+                    targetEl.style.setProperty('--photo-url', originalBg);
                     targetEl.classList.add('has-image');
                     targetEl.style.pointerEvents = 'auto';
                 }, 300);
-            }, 4000);
+            }, 10000);
         }, 600); // 600ms delay to show the line before flight
     }
 });

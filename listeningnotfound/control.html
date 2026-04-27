@@ -122,6 +122,38 @@
         @media (max-width: 600px) {
             .container { padding: 20px; }
         }
+
+        .hex-wrapper {
+            display: flex;
+            align-items: center;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding-left: 15px;
+            flex-grow: 1;
+            transition: border-color 0.3s;
+        }
+        .hex-wrapper:focus-within {
+            border-color: var(--accent);
+        }
+        .hex-prefix {
+            opacity: 0.5;
+            font-weight: 700;
+            margin-right: 2px;
+            user-select: none;
+            font-size: 1rem;
+        }
+        .hex-wrapper input {
+            background: transparent !important;
+            border: none !important;
+            padding: 15px 15px 15px 0 !important;
+            width: 100%;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +169,7 @@
                     <div id="current-section-display" style="font-size: 1.8rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em;">ENTRY LOOP</div>
                     <div id="countdown-display" style="font-family: monospace; font-size: 1.2rem; opacity: 0.5;">--:--</div>
                 </div>
-                <button id="start-sequence-btn">START SECTION 2 (ACTIVATION)</button>
+                <button id="start-sequence-btn" style="background: #222;">START SECTION 2 (ACTIVATION)</button>
                 <button id="reset-sequence-btn" style="background: #331111; margin-top: 10px; font-size: 0.7rem; padding: 10px;">RESET EVERYTHING (REVERT TO ENTRY LOOP)</button>
             </div>
 
@@ -152,7 +184,10 @@
         <div class="group">
             <label>COLOR CONTROL (HEX)</label>
             <div style="display: flex; gap: 10px;">
-                <input type="text" id="color-input" placeholder="#FFFFFF" style="flex-grow: 1;">
+                <div class="hex-wrapper">
+                    <span class="hex-prefix">#</span>
+                    <input type="text" id="color-input" placeholder="FFFFFF" maxlength="6">
+                </div>
                 <button id="update-color-btn" style="width: auto; padding: 0 20px; font-size: 0.7rem; background: #444;">SET</button>
             </div>
         </div>
@@ -308,6 +343,7 @@
                 currentDisplay.innerText = sections[idx] ? sections[idx].name : "FINISHED";
                 startBtn.disabled = true;
                 startBtn.innerText = "SEQUENCE IN PROGRESS";
+                startBtn.style.background = 'var(--accent)';
                 
                 updateAdminProgress(idx);
 
@@ -323,6 +359,7 @@
                 countdownDisplay.innerText = "--:--";
                 startBtn.disabled = false;
                 startBtn.innerText = "START SECTION 2 (ACTIVATION)";
+                startBtn.style.background = '#222';
                 updateAdminProgress(0);
             }
         });
@@ -436,16 +473,20 @@
 
         // Color Control
         updateColorBtn.addEventListener('click', () => {
-            const color = colorInput.value;
+            const val = colorInput.value.trim();
+            const color = '#' + val;
             if (/^#[0-9A-F]{6}$/i.test(color)) {
                 set(ref(db, 'config/color'), color);
             } else {
-                alert("Please enter a valid Hex code (e.g., #FFFFFF)");
+                alert("Please enter 6 hex characters (e.g., FFFFFF)");
             }
         });
 
         onValue(ref(db, 'config/color'), (snap) => {
-            if (snap.exists()) colorInput.value = snap.val();
+            if (snap.exists()) {
+                const val = snap.val();
+                colorInput.value = val.startsWith('#') ? val.substring(1) : val;
+            }
         });
 
         // Instrument Positions Control

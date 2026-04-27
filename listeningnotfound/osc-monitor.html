@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSC MONITOR | Listening Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #00f2ff;
+            --accent-dim: rgba(0, 242, 255, 0.1);
+            --text: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+            --panel: rgba(255, 255, 255, 0.03);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .title-group h1 {
+            font-size: 0.8rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .status-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 1px;
+            background: var(--border);
+            overflow: hidden;
+        }
+
+        .log-container {
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .log-header {
+            padding: 15px 25px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.4;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 120px 250px 1fr;
+        }
+
+        #log-list {
+            flex: 1;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 10px 0;
+        }
+
+        .log-item {
+            padding: 12px 25px;
+            display: grid;
+            grid-template-columns: 120px 250px 1fr;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            animation: fadeIn 0.3s ease-out;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .log-item:hover {
+            background: var(--panel);
+        }
+
+        .log-item.new {
+            background: var(--accent-dim);
+        }
+
+        .timestamp { opacity: 0.4; font-size: 0.75rem; }
+        .address { color: var(--accent); font-weight: 500; }
+        .args { opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .details-panel {
+            background: var(--bg);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            border-left: 1px solid var(--border);
+        }
+
+        .panel-section h3 {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.4;
+            margin-bottom: 15px;
+        }
+
+        .detail-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .detail-value {
+            font-size: 1.2rem;
+            color: var(--accent);
+            word-break: break-all;
+        }
+
+        .args-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .arg-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .arg-index { opacity: 0.3; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #log-list::-webkit-scrollbar { width: 4px; }
+        #log-list::-webkit-scrollbar-track { background: transparent; }
+        #log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .empty-state {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.2;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .empty-state svg { width: 50px; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="title-group">
+            <h1>OSC Console Monitor</h1>
+            <div style="font-size: 0.6rem; opacity: 0.4;">PORT: 53001 | BRIDGE: 8081</div>
+        </div>
+        <div class="status-group">
+            <div class="indicator">
+                <div class="dot" id="ws-dot"></div>
+                <span id="ws-status">Bridge Offline</span>
+            </div>
+            <div class="indicator">
+                <div class="dot" id="osc-dot"></div>
+                <span id="osc-status">No Signal</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="log-container">
+            <div class="log-header">
+                <span>Timestamp</span>
+                <span>Address</span>
+                <span>Arguments</span>
+            </div>
+            <div id="log-list">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z"></path>
+                        <path d="M13 2V9H20"></path>
+                    </svg>
+                    <p>Awaiting incoming OSC data...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-panel">
+            <div class="panel-section">
+                <h3>Last Address</h3>
+                <div class="detail-box">
+                    <div class="detail-value" id="detail-address">---</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Arguments</h3>
+                <div class="detail-box">
+                    <div id="detail-args" class="args-list">
+                        <div style="opacity: 0.3; font-size: 0.8rem;">Select a message to view details</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section" style="margin-top: auto;">
+                <button onclick="clearLogs()" style="width: 100%; background: transparent; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s;">
+                    Clear Console
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const logList = document.getElementById('log-list');
+        const wsDot = document.getElementById('ws-dot');
+        const wsStatus = document.getElementById('ws-status');
+        const oscDot = document.getElementById('osc-dot');
+        const oscStatus = document.getElementById('osc-status');
+        
+        const detailAddress = document.getElementById('detail-address');
+        const detailArgs = document.getElementById('detail-args');
+
+        let socket;
+        let lastMessageTime = 0;
+        let oscTimeout;
+
+        function connect() {
+            socket = new WebSocket('ws://localhost:8081');
+
+            socket.onopen = () => {
+                wsDot.classList.add('active');
+                wsStatus.innerText = 'Bridge Connected';
+                console.log('Connected to OSC Bridge');
+            };
+
+            socket.onclose = () => {
+                wsDot.classList.remove('active');
+                wsStatus.innerText = 'Bridge Offline';
+                setTimeout(connect, 2000);
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'osc') {
+                    handleOscMessage(data);
+                }
+            };
+        }
+
+        function handleOscMessage(data) {
+            // Remove empty state
+            const empty = logList.querySelector('.empty-state');
+            if (empty) empty.remove();
+
+            // Update Signal Indicator
+            oscDot.classList.add('active');
+            oscStatus.innerText = 'Receiving Signal';
+            clearTimeout(oscTimeout);
+            oscTimeout = setTimeout(() => {
+                oscDot.classList.remove('active');
+                oscStatus.innerText = 'Signal Idle';
+            }, 1000);
+
+            // Create Log Item
+            const item = document.createElement('div');
+            item.className = 'log-item new';
+            
+            const time = new Date(data.timestamp);
+            const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}:${time.getSeconds().toString().padStart(2, '0')}.${time.getMilliseconds().toString().padStart(3, '0')}`;
+
+            item.innerHTML = `
+                <span class="timestamp">${timeStr}</span>
+                <span class="address">${data.address}</span>
+                <span class="args">${data.args.join(', ')}</span>
+            `;
+
+            item.onclick = () => showDetails(data);
+
+            logList.insertBefore(item, logList.firstChild);
+
+            // Keep only last 100 messages
+            if (logList.children.length > 100) {
+                logList.removeChild(logList.lastChild);
+            }
+
+            // Automatically show details of the latest message
+            showDetails(data);
+
+            // Remove 'new' class after a bit
+            setTimeout(() => item.classList.remove('new'), 1000);
+        }
+
+        function showDetails(data) {
+            detailAddress.innerText = data.address;
+            detailArgs.innerHTML = data.args.map((arg, i) => `
+                <div class="arg-item">
+                    <span class="arg-index">[${i}]</span>
+                    <span class="arg-value">${arg}</span>
+                </div>
+            `).join('');
+        }
+
+        function clearLogs() {
+            logList.innerHTML = `
+                <div class="empty-state">
+                    <p>Console cleared. Awaiting data...</p>
+                </div>
+            `;
+            detailAddress.innerText = '---';
+            detailArgs.innerHTML = '<div style="opacity: 0.3; font-size: 0.8rem;">Select a message to view details</div>';
+        }
+
+        connect();
+    </script>
+</body>
+</html>
