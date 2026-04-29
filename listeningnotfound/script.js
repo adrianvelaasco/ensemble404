@@ -608,6 +608,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!spot.classList.contains('has-image') || spot.classList.contains('photo-hidden')) {
                 spot.classList.add('buzz');
                 setTimeout(() => spot.classList.remove('buzz'), 300);
+
+                // Add loading text
+                const safeTitle = title ? title.replace(/\s+/g, '-') : 'unknown';
+                const existingLoading = document.getElementById(`loading-${safeTitle}`);
+                
+                if (!existingLoading) {
+                    const loadingText = document.createElement('div');
+                    loadingText.id = `loading-${safeTitle}`;
+                    loadingText.className = 'loading-buzz-text';
+                    loadingText.textContent = 'loading...';
+                    
+                    const rect = spot.getBoundingClientRect();
+                    loadingText.style.left = (rect.left + rect.width / 2) + 'px';
+                    loadingText.style.top = (rect.bottom + 5) + 'px';
+                    
+                    document.body.appendChild(loadingText);
+                    
+                    setTimeout(() => {
+                        if (loadingText.parentNode) {
+                            loadingText.parentNode.removeChild(loadingText);
+                        }
+                    }, 3000);
+                }
+
                 return;
             }
 

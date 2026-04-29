@@ -812,3 +812,24 @@ body {
 .landing-content {
     animation: fadeInScale 2s ease-out forwards;
 }
+
+/* Loading Buzz Text */
+.loading-buzz-text {
+    position: fixed;
+    color: var(--rect-border);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 10000;
+    pointer-events: none;
+    text-shadow: 0 0 5px var(--rect-border);
+    animation: fadeInOutBuzz 3s forwards;
+}
+
+@keyframes fadeInOutBuzz {
+    0% { opacity: 0; transform: translate(-50%, 5px); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -5px); }
+}
