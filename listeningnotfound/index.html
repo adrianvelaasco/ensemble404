@@ -190,19 +190,22 @@
             
             if (type === 'credits') {
                 const credits = [
-                    { category: "CONCEPT & DESIGN" },
-                    { name: "Oscar Corpo", role: "Composer - Artistic Director" },
-                    { name: "Isay Ramirez", role: "Sound Engineer" },
-                    { name: "Adri Velasco", role: "Video, Light, Web Design" },
+                    { category: "DESIGN" },
+                    { name: "Oscar Corpo", role: "Concept, Composer, AI sound design, Artistic Director" },
+                    { name: "Adri Velasco", role: "Video, Light, Web design, Assistance composer" },
+                    { name: "Isay Ramirez", role: "Sound Engineer, Spatialization, Recording Engineer" },
                     { category: "MUSICIANS" },
+                    { name: "Valentina Donato", role: "Piano, Keyboard, Theremin, Assistance Composer" },
                     { name: "Bahar Erünsal", role: "Violin" },
-                    { name: "Giusy Panzanaro", role: "Flute" },
-                    { name: "Rodrigo Rodrigues", role: "Bassoon - Contrabassoon" },
-                    { name: "Vitalia Agrba", role: "Drumset - Percussion" },
-                    { name: "Valentina Donato", role: "Piano - Theremin" }
+                    { name: "Vitalia Agrba", role: "Drumkit, Percussion" },
+                    { name: "Giusy Panzanaro", role: "Flute" }
                 ];
 
-                let html = `<h2 style="margin-bottom: 40px; letter-spacing: 0.2em; font-weight: 200; font-size: 2rem; color: #fff; text-align: center;">CREDITS</h2>`;
+                let html = `<div style="text-align: center; margin-bottom: 40px;">`;
+                html += `<h2 style="margin-bottom: 25px; letter-spacing: 0.35em; font-weight: 200; font-size: 1.5rem; color: #fff; text-transform: uppercase; opacity: 0.9;">Credits</h2>`;
+                html += `<div style="width: 30px; height: 1px; background: rgba(255,255,255,0.4); margin: 0 auto;"></div>`;
+                html += `</div>`;
+                
                 html += `<div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">`;
                 credits.forEach(c => {
                     if (c.category) {
@@ -226,13 +229,24 @@
                 const response = await fetch(fileName);
                 const text = await response.text();
                 
-                let html = `<h2 style="margin-bottom: 30px; letter-spacing: 0.2em; font-weight: 200; font-size: 2rem; color: #fff;">${type === 'lnf' ? 'LISTENING NOT FOUND' : 'ENSEMBLE 404'}</h2>`;
+                let html = `<div style="text-align: center; margin-bottom: 40px;">`;
+                html += `<h2 style="margin-bottom: 25px; letter-spacing: 0.35em; font-weight: 200; font-size: 1.5rem; color: #fff; text-transform: uppercase; opacity: 0.9;">${type === 'lnf' ? 'Listening Not Found' : 'Ensemble 404'}</h2>`;
+                html += `<div style="width: 30px; height: 1px; background: rgba(255,255,255,0.4); margin: 0 auto;"></div>`;
+                html += `</div>`;
+                
+                const paragraphs = text.trim().split(/\n\n+/);
+                html += `<div style="line-height: 2.2; font-size: 0.95rem; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 0.05em; max-width: 85%; margin: 0 auto; font-style: italic;">`;
+                paragraphs.forEach((p, index) => {
+                    html += `<p style="text-align: justify !important; margin-bottom: ${index === paragraphs.length - 1 ? '0' : '2.5em'};">${p.replace(/\n/g, '<br>')}</p>`;
+                });
+                html += `</div>`;
                 
                 if (type === 'ensemble') {
-                    html += `<div style="text-align: center; margin-bottom: 30px;"><img src="ensemble404logo.png" style="max-width: 180px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));"></div>`;
+                    html += `<div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); max-width: 50%; margin-left: auto; margin-right: auto;">
+                                <img src="ensemble404logo.png" style="max-width: 130px; opacity: 0.6; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));">
+                             </div>`;
                 }
                 
-                html += `<div style="line-height: 1.8; opacity: 0.95; font-size: 1rem; color: #fff; white-space: pre-wrap; text-align: center;">${text}</div>`;
                 landingModalContent.innerHTML = html;
             } catch (err) {
                 landingModalContent.innerHTML = '<p>Error loading content.</p>';
