@@ -316,13 +316,26 @@
                 item.style.gap = '8px';
                 item.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span>${i + 1}. ${s.name}</span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button class="jump-btn" style="background: var(--accent); color: white; border: none; padding: 4px 8px; font-size: 0.6rem; border-radius: 4px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; width: auto;" data-index="${i}">PLAY</button>
+                            <span>${i + 1}. ${s.name}</span>
+                        </div>
                         <span class="admin-status" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;"></span>
                     </div>
                     <div class="admin-progress-container" style="height: 2px; width: 100%; background: rgba(255,255,255,0.05); border-radius: 1px; overflow: hidden; display: none;">
                         <div class="admin-progress-bar" style="height: 100%; width: 0%; background: #fff; transition: width 0.2s linear;"></div>
                     </div>
                 `;
+                const jumpBtn = item.querySelector('.jump-btn');
+                jumpBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const startTime = Date.now() + (window.serverTimeOffset || 0);
+                    set(ref(db, 'sequence'), {
+                        currentIndex: i,
+                        startTime: startTime,
+                        isRunning: true
+                    });
+                });
                 adminSectionList.appendChild(item);
             });
         }
