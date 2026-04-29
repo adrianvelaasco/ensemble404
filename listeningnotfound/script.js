@@ -90,11 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="section">${i + 1}. ${s.name}</div>
                 <div class="status-container" style="width: 100%; display: flex; justify-content: center; height: 15px;"></div>
             `;
+            /*
             item.addEventListener('click', () => {
                 if (parseInt(item.dataset.index) <= currentSequenceData.currentIndex) {
                     openSectionModal(s);
                 }
             });
+            */
             sectionList.appendChild(item);
         });
     }
@@ -416,6 +418,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSequenceData = data;
                 updateSectionUI();
                 updateVisualFocus();
+            }
+        });
+
+        // --- Shutdown Sync ---
+        const shutdownRef = window.firebaseRef(window.firebaseDB, 'config/shutdown');
+        window.firebaseOnValue(shutdownRef, (snap) => {
+            const isShutdown = snap.val();
+            const overlay = document.getElementById('error-404-overlay');
+            if (overlay) {
+                overlay.style.display = isShutdown ? 'flex' : 'none';
             }
         });
 

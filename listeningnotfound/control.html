@@ -171,6 +171,10 @@
                 </div>
                 <button id="start-sequence-btn" style="background: #222;">START SECTION 2 (ACTIVATION)</button>
                 <button id="reset-sequence-btn" style="background: #331111; margin-top: 10px; font-size: 0.7rem; padding: 10px;">RESET EVERYTHING (REVERT TO ENTRY LOOP)</button>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button id="turnon-btn" style="background: #008800; font-size: 0.7rem; padding: 10px; letter-spacing: 0.3em;">TURN ON</button>
+                    <button id="shutdown-btn" style="background: #ff0000; font-size: 0.7rem; padding: 10px; letter-spacing: 0.3em;">SHUT DOWN</button>
+                </div>
             </div>
 
             <div class="group" style="flex: 1; margin-bottom: 0;">
@@ -266,6 +270,8 @@
 
         const startBtn = document.getElementById('start-sequence-btn');
         const resetBtn = document.getElementById('reset-sequence-btn');
+        const shutdownBtn = document.getElementById('shutdown-btn');
+        const turnonBtn = document.getElementById('turnon-btn');
         const currentDisplay = document.getElementById('current-section-display');
         const countdownDisplay = document.getElementById('countdown-display');
         const statusText = document.getElementById('status-text');
@@ -469,6 +475,20 @@
             });
             // Reset color tint to black (none)
             set(ref(db, 'config/color'), '#000000');
+            // Reset shutdown state
+            set(ref(db, 'config/shutdown'), false);
+        });
+
+        // Shutdown Action
+        shutdownBtn.addEventListener('click', () => {
+            if(confirm("Are you sure you want to SHUT DOWN the main display?")) {
+                set(ref(db, 'config/shutdown'), true);
+            }
+        });
+
+        // Turn On Action
+        turnonBtn.addEventListener('click', () => {
+            set(ref(db, 'config/shutdown'), false);
         });
 
         // Color Control

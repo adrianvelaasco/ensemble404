@@ -187,7 +187,8 @@ body {
     text-overflow: ellipsis;
     text-transform: uppercase;
     font-weight: 400;
-    cursor: pointer;
+    cursor: default;
+    pointer-events: none;
     font-size: 0.8rem;
     opacity: 0.2;
 }
@@ -271,8 +272,8 @@ body {
     text-overflow: ellipsis;
     text-transform: uppercase;
     font-weight: 400;
-    pointer-events: auto; /* Make sections clickable */
-    cursor: pointer;
+    pointer-events: none; /* Make sections not clickable */
+    cursor: default;
 }
 
 .section.active {
